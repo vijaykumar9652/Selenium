@@ -1,0 +1,117 @@
+package ASSIGNMEMNT;
+import java.awt.AWTException;
+import java.awt.Robot;
+import java.awt.event.KeyEvent;
+import java.time.Duration;
+import java.util.List;
+import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.Keys;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.interactions.Actions;
+
+public class FitPeo_Assignment {
+	public static void main(String[] args) throws InterruptedException, AWTException {
+		WebDriver driver = new ChromeDriver();
+		driver.manage().window().maximize();
+		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(20));
+//		STEP-1:Navigate to the FitPeo Home page
+		driver.get("https://www.fitpeo.com");
+//		STEP-2:Navigate to the Revenue Calculator Page
+		driver.get("https://fitpeo.com/revenue-calculator");
+//		STEP-3:Scroll Down to the Slider section
+		WebElement scroll=driver.findElement(By.xpath("//span[contains(text(),'Patients')]"));
+		Actions a1=new Actions(driver);
+		a1.scrollToElement(scroll).perform();
+//		STEP-4:Adjust the Slider
+		JavascriptExecutor js=(JavascriptExecutor)driver;
+		js.executeScript("window.scrollBy(0, 200)");
+		Thread.sleep(4000);
+		WebElement pass=driver.findElement(By.xpath("//input[@aria-orientation=\"horizontal\"]"));
+		for(; ;) {
+			if(pass.getAttribute("value").contains("820")) {
+				break;
+			}
+			pass.sendKeys(Keys.ARROW_RIGHT);
+			
+		}
+		Thread.sleep(2000);
+//		STEP-5:Update the Text Field
+		WebElement textfield = driver.findElement(By.xpath("//input[contains(@class,'MuiInputBase')]"));
+		textfield.click();
+		Robot rb=new Robot();
+		rb.keyPress(KeyEvent.VK_CONTROL);
+		rb.keyPress(KeyEvent.VK_A);
+		rb.keyPress(KeyEvent.VK_BACK_SPACE);
+		rb.keyRelease(KeyEvent.VK_BACK_SPACE);
+		rb.keyRelease(KeyEvent.VK_A);
+		rb.keyRelease(KeyEvent.VK_CONTROL);
+		rb.keyPress(KeyEvent.VK_5);
+		rb.keyRelease(KeyEvent.VK_5);
+		rb.keyPress(KeyEvent.VK_6);
+		rb.keyRelease(KeyEvent.VK_6);
+		rb.keyPress(KeyEvent.VK_0);
+		rb.keyRelease(KeyEvent.VK_0);
+		Thread.sleep(2000);
+		rb.keyPress(KeyEvent.VK_CONTROL);
+		rb.keyPress(KeyEvent.VK_A);
+		rb.keyPress(KeyEvent.VK_BACK_SPACE);
+		rb.keyRelease(KeyEvent.VK_BACK_SPACE);
+		rb.keyRelease(KeyEvent.VK_A);
+		rb.keyRelease(KeyEvent.VK_CONTROL);
+//		STEP-6:Validate Slider Value
+		JavascriptExecutor js2=(JavascriptExecutor)driver;
+		js2.executeScript("window.scrollBy(0, 200)");
+		Thread.sleep(2000);
+		WebElement pass2=driver.findElement(By.xpath("//input[@aria-orientation=\"horizontal\"]"));
+		for(; ;) {
+			if(pass2.getAttribute("value").contains("820")) {
+				break;
+			}
+			pass2.sendKeys(Keys.ARROW_RIGHT);
+			
+		}
+		Thread.sleep(2000);
+//		STEP-7:select the check boxes for CPT-99091, CPT-99453, CPT-99454, and CPT-99474
+		List<WebElement> cptCodes = driver.findElements(By.xpath("//p[@class='MuiTypography-root MuiTypography-body1 inter css-1s3unkt']"));			
+		for (WebElement Products : cptCodes)
+		{
+			String text = Products.getText();
+			if(text.equals("CPT-99091"))
+				driver.findElement(By.xpath("(//input[@type='checkbox'])[1]")).click();
+			else if(text.equals("CPT-99453"))
+				driver.findElement(By.xpath("(//input[@type='checkbox'])[2]")).click();
+			else if(text.equals("CPT-99454"))
+				driver.findElement(By.xpath("(//input[@type='checkbox'])[3]")).click();
+			else if(text.equals("CPT-99474"))
+				driver.findElement(By.xpath("(//input[@type='checkbox'])[8]")).click();
+		}
+//		STEP-8:Validate Total Recurring Reimbursement
+		WebElement scroll2=driver.findElement(By.xpath("(//div[contains(@class,'MuiBox-root')])[22]"));
+		a1.scrollToElement(scroll2).perform();
+		WebElement Total_Recurring=driver.findElement(By.xpath("(//p[contains(text(),'$')])[2]"));
+        String reimbursementText = Total_Recurring.getText();
+        if (reimbursementText.contains("$110700")) {
+        	System.out.println("test case is passed");
+        }
+        else {
+        	System.out.println("test case is failed");
+        }
+		
+//      STEP-9:Verify that the header displaying shows the value $110700.
+        WebElement scroll3=driver.findElement(By.xpath("//p[text()='FitPeo Inc']"));
+        a1=new Actions(driver);
+		a1.scrollToElement(scroll3).perform();
+		WebElement Total_Recurring2=driver.findElement(By.xpath("(//p[contains(@class,'MuiTypography')])[7]"));
+        String reimbursementText2 = Total_Recurring2.getText();
+        if (reimbursementText2.contains("$110700")) {
+        	System.out.println("test case is passed");
+        }
+        else {
+        	System.out.println("test case is failed");
+        }
+	}
+
+}
