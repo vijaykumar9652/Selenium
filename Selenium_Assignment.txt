@@ -113,5 +113,4 @@ public class FitPeo_Assignment {
         	System.out.println("test case is failed");
         }
 	}
-
 }
